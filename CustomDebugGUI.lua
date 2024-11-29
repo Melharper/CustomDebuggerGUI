@@ -1,5 +1,10 @@
--- Debugging Script with GUI Display
+-- Debugging Script with GUI Display (Clears Logs on New Run)
 local remote = game:GetService("ReplicatedStorage"):WaitForChild("ClientModules"):WaitForChild("Network"):WaitForChild("RemoteFunction")
+
+-- Clear any existing debug GUI
+if game.Players.LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DebugOutputGUI") then
+    game.Players.LocalPlayer.PlayerGui.DebugOutputGUI:Destroy()
+end
 
 local output = {} -- Table to store all logs
 
@@ -65,6 +70,13 @@ copyButton.Parent = frame
 
 -- Display output in the GUI
 local function displayOutput()
+    -- Clear any existing text labels in the scrolling frame
+    for _, child in ipairs(scrollingFrame:GetChildren()) do
+        if child:IsA("TextLabel") then
+            child:Destroy()
+        end
+    end
+
     for _, line in ipairs(output) do
         local textLabel = Instance.new("TextLabel")
         textLabel.Size = UDim2.new(1, -10, 0, 30)
